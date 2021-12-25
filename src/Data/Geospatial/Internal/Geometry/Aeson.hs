@@ -22,6 +22,7 @@ import           Control.Monad       (mzero)
 import           Data.Aeson          (FromJSON (..), Object, ToJSON (..), Value,
                                       object, (.:), (.:?), (.=))
 import           Data.Aeson.Types    (Pair, Parser)
+import           Data.Aeson.Key      (Key)
 import           Data.Maybe          (Maybe (..))
 import           Data.Text           (Text)
 
@@ -49,12 +50,12 @@ makeGeometryGeoAeson typeString coordinates =
 
 -- | get an optional value out of a JSON object:
 --
-optValFromObj :: (FromJSON a) => Text -> Object -> Parser (Maybe a)
+optValFromObj :: (FromJSON a) => Key -> Object -> Parser (Maybe a)
 optValFromObj = flip (.:?)
 
 -- | The other way around, given an optional value, will return the attributes that
 -- should be added to the makeObj input
 --
-optAttributes :: (ToJSON a) => Text -> Maybe a -> [Pair]
+optAttributes :: (ToJSON a) => Key -> Maybe a -> [Pair]
 optAttributes _ Nothing     = []
 optAttributes name (Just x) = [name .= x]
